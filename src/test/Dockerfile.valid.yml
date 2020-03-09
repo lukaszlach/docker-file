@@ -1,0 +1,71 @@
+---
+metaArguments:
+  B:
+    if:
+    - equals: 9999
+      otherwise: Meta argument B does not equal 9999
+    - not-empty:
+      otherwise: Custom empty
+stages:
+  count:
+    if:
+    - matches: 2
+      otherwise: Custom message
+  names:
+    if:
+    - match: "test[1-9]"
+      otherwise: Custom message
+    - equal: "test1 test2"
+      otherwise: Custom message
+  stage:
+    test1:
+      rendered-base-image:
+        if:
+        - equals: nginx:999
+          otherwise: Custom message
+      instruction-names:
+        if:
+        - match: "run.+workdir"
+          otherwise: Custom message
+      instructions-in-order:
+        - instructions:
+          - instruction: run
+            if:
+            - field: command
+              matchesAny:
+              - apt install
+              - apt-get install
+              otherwise: Custom message
+            - field: use-shell
+              matches: "true"
+              otherwise: Shell custom
+          - instruction: workdir
+            if:
+            - field: rendered-path
+              equals: /appss
+              otherwise: Workdir custom
+          otherwise: "Custom message #2"
+    test2:
+      instructions-count:
+        if:
+        - gt: 3
+          otherwise: Custom message
+      instructions:
+        - instruction: env
+          if:
+          - field: value/A
+            equalsAny:
+            - "1234"
+            - "A"
+            otherwise: Custom message env/A
+        - instruction: env
+          if:
+          - field: value/AAA
+            equalsAny:
+            - "1234"
+            otherwise: Custom message env/AAA
+        - instruction: volume
+          if:
+          - field: path
+            matches: /dir1
+            otherwise: Custom volume message

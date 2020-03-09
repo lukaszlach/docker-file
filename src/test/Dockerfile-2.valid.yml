@@ -1,0 +1,27 @@
+---
+metaArguments:
+  NGINX_VERSION:
+    if:
+    - not-empty:
+      otherwise: Custom empty
+    - equals: "1.10"
+      otherwise: Argument NGINX_VERSION should default to 1.10
+stages:
+  count:
+    if:
+    - equals: 1
+      otherwise: One stage is enough
+  names:
+    if:
+    - equal: "build"
+      otherwise: Name the stage "build"
+  stage:
+    build:
+      rendered-base-image:
+        if:
+        - matches: "^nginx:"
+          otherwise: Invalid base image
+      base-image:
+        if:
+        - matches: ':\\${NGINX_VERSION}$'
+          otherwise: Parametrize the nginx version with NGINX_VERSION argument

@@ -1,0 +1,16 @@
+ARG B=999
+FROM nginx:${B} AS test1
+RUN apt-get update && \
+    apt-get install -y jq
+WORKDIR /app
+
+FROM nginx:latest AS test2
+COPY . .
+ADD a1 a2
+CMD ["/app/binary", "run"]
+RUN go test .
+ENV A=1234
+ENV A=123
+ARG B=2
+VOLUME /dir1
+VOLUME ["/dir2"]

@@ -1,0 +1,2 @@
+FROM nginx:${NGINX_VERSIONs} AS build
+VOLUME /dir1

@@ -1,0 +1,7 @@
+.idea
+src/build
+bin/*.sh
+**/test-sh
+*.test-sh
+*.test-sh.*
+src/vendor
