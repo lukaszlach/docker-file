@@ -43,7 +43,120 @@ Parses the `Dockerfile` using [BuildKit](https://github.com/moby/buildkit) parse
 
 ```
 $ docker-file dockerfile parse ./Dockerfile
-{"MetaArgs":[{"Key":"B","DefaultValue":"999","ProvidedValue":null,"Value":"999"}],"Stages":[{"Name":"test1","BaseName":"nginx:${B}","SourceCode":"FROM nginx:${B} AS test1","Platform":"","As":"test1","From":{"Image":"nginx:${B}"},"Commands":[{"CmdLine":["apt-get update \u0026\u0026     apt-get install -y jq"],"Name":"run","PrependShell":true},{"Name":"workdir","Path":"/app"}]},{"Name":"test2","BaseName":"nginx:latest","SourceCode":"FROM nginx:latest AS test2","Platform":"","As":"test2","From":{"Image":"nginx:latest"},"Commands":[{"Chown":"","From":"","Name":"copy","SourcesAndDest":[".","."]},{"Chown":"","Name":"add","SourcesAndDest":["a1","a2"]},{"CmdLine":["/app/binary","run"],"Name":"cmd","PrependShell":false},{"CmdLine":["go test ."],"Name":"run","PrependShell":true},{"Env":[{"Key":"A","Value":"1234"}],"Name":"env"},{"Env":[{"Key":"A","Value":"123"}],"Name":"env"},{"Key":"B","Name":"arg","Value":"2"},{"Name":"volume","Volumes":["/dir1"]},{"Name":"volume","Volumes":["/dir2"]}]}]}
+{
+  "MetaArgs": [
+    {
+      "Key": "B",
+      "DefaultValue": "999",
+      "ProvidedValue": null,
+      "Value": "999"
+    }
+  ],
+  "Stages": [
+    {
+      "Name": "test1",
+      "BaseName": "nginx:${B}",
+      "SourceCode": "FROM nginx:${B} AS test1",
+      "Platform": "",
+      "As": "test1",
+      "From": {
+        "Image": "nginx:${B}"
+      },
+      "Commands": [
+        {
+          "CmdLine": [
+            "apt-get update &&     apt-get install -y jq"
+          ],
+          "Name": "run",
+          "PrependShell": true
+        },
+        {
+          "Name": "workdir",
+          "Path": "/app"
+        }
+      ]
+    },
+    {
+      "Name": "test2",
+      "BaseName": "nginx:latest",
+      "SourceCode": "FROM nginx:latest AS test2",
+      "Platform": "",
+      "As": "test2",
+      "From": {
+        "Image": "nginx:latest"
+      },
+      "Commands": [
+        {
+          "Chown": "",
+          "From": "",
+          "Name": "copy",
+          "SourcesAndDest": [
+            ".",
+            "."
+          ]
+        },
+        {
+          "Chown": "",
+          "Name": "add",
+          "SourcesAndDest": [
+            "a1",
+            "a2"
+          ]
+        },
+        {
+          "CmdLine": [
+            "/app/binary",
+            "run"
+          ],
+          "Name": "cmd",
+          "PrependShell": false
+        },
+        {
+          "CmdLine": [
+            "go test ."
+          ],
+          "Name": "run",
+          "PrependShell": true
+        },
+        {
+          "Env": [
+            {
+              "Key": "A",
+              "Value": "1234"
+            }
+          ],
+          "Name": "env"
+        },
+        {
+          "Env": [
+            {
+              "Key": "A",
+              "Value": "123"
+            }
+          ],
+          "Name": "env"
+        },
+        {
+          "Key": "B",
+          "Name": "arg",
+          "Value": "2"
+        },
+        {
+          "Name": "volume",
+          "Volumes": [
+            "/dir1"
+          ]
+        },
+        {
+          "Name": "volume",
+          "Volumes": [
+            "/dir2"
+          ]
+        }
+      ]
+    }
+  ]
+}
 ```
 
 When BuildKit fails to parse the file the actual error message is returned with a non-zero exit code.
